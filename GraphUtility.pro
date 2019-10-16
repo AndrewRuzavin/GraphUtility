@@ -30,3 +30,8 @@ HEADERS += \
     src/SaverI.hpp \
     src/Saver.hpp \
     src/InfoStructs.hpp
+
+DISTFILES += \
+    introduction/1.txt \
+    introduction/2.txt \
+    introduction/3.txt
