@@ -71,8 +71,8 @@ namespace GraphCreator {
 	}
 		
 	void Saver::closeAllUnits() {
-		for ( ; indentNum > 0; --indentNum ) {
-			ofs << getIndent() << getUnitClosePart() << "\n";
+		for ( ; indentNum > 0; ) {
+			ofs << getUnitClosePart() << "\n";
 		}
 	}
 	
@@ -88,7 +88,6 @@ namespace GraphCreator {
 	}
 	
 	std::string Saver::getUnitClosePart() const {
-		
 		if ( indentNum > 0) {
 			--indentNum;
 			return getIndent() + getPart( UNIT_CLOSE );

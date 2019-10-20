@@ -60,7 +60,7 @@ namespace GraphCreator {
 			FileFieldParts fieldParts;
 			mutable int indentNum = 0;
 			std::map<__uint8_t, std::string> colors;
-			const short cNodeThickness = 0;
+			const short cNodeThickness = 2;
 	};
 
 }
