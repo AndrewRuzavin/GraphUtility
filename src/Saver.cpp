@@ -30,20 +30,18 @@ namespace GraphCreator {
 	}
 	
 	void Saver::fillFieldParts() {
-		fieldParts.clear();
-		fieldParts.reserve( AMOUNT_OF_ELEMS );
-		fieldParts.push_back( "digraph " );		//	HEADER_START
-		fieldParts.push_back( "{" );			//	UNIT_OPEN
-		fieldParts.push_back( "}" );			//	UNIT_CLOSE
-		fieldParts.push_back( ";\n" );			//	EOS
-		fieldParts.push_back( "\"" );			//	QMARK
-		fieldParts.push_back( " [" );			//	ELEM_OPEN
-		fieldParts.push_back( "]" );			//	ELEM_CLOSE
-		fieldParts.push_back( " -> " );			//	EDGE
-		fieldParts.push_back( "color=\"#" );	//	COLOR
-		fieldParts.push_back( "label=" );		//	LABEL
-		fieldParts.push_back( "\t" );			//	INDENT
-		fieldParts.push_back( "penwidth=" );	//	PENWIDTH
+		fieldParts[HEADER_START] = "digraph ";
+		fieldParts[UNIT_OPEN] = "{";
+		fieldParts[UNIT_CLOSE] = "}";
+		fieldParts[EOS] = ";\n";
+		fieldParts[QMARK] = "\"";
+		fieldParts[ELEM_OPEN] = " [";
+		fieldParts[ELEM_CLOSE] = "]";
+		fieldParts[EDGE] = " -> ";
+		fieldParts[COLOR] = "color=\"#";
+		fieldParts[LABEL] = "label=";
+		fieldParts[INDENT] = "\t";
+		fieldParts[PENWIDTH] = "penwidth=";
 	}
 	
 	void Saver::createDir() const {

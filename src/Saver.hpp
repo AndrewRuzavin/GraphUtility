@@ -24,7 +24,7 @@ namespace GraphCreator {
 				AMOUNT_OF_ELEMS
 			};
 			using FileFieldPartElem = std::string;
-			using FileFieldParts = std::vector<FileFieldPartElem>;
+			using FileFieldParts = std::array<FileFieldPartElem, AMOUNT_OF_ELEMS>;
 			
 		public:
 			explicit Saver( const std::string &dirPath, const std::string &fileName );
