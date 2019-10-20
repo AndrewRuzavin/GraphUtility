@@ -1,7 +1,6 @@
 #include "Converter.hpp"
 #include "FileException.hpp"
 #include <iostream>
-#include <graphviz/gvc.h>
 
 namespace GraphCreator {
 	
@@ -18,7 +17,7 @@ namespace GraphCreator {
 		return loader->getENum();
 	}
 	
-	void Converter::convert() {
+	void Converter::convert() {		
 		saver->open();
 		
 		convertVertices();
@@ -42,14 +41,15 @@ namespace GraphCreator {
 			saver->writeEdge( edge );
 		}
 	}
-	
+
+	static int reader( void *chan, char *buf, int bufsize ) {
+		return fread(buf, 1, bufsize, (FILE*)chan);
+	}
+
 	bool Converter::saveImageGV( const std::string &filePath ) const {
-		GVC_t *gvc;
-		Agraph_t *g;
-		FILE *fp;
-		gvc = gvContext();
-		fp = fopen( filePath.c_str(), "r" );
-		g = agread( fp, 0 );
+		FILE *fp = fopen( filePath.c_str(), "r" );
+		auto g = takeGraph( fp );
+		GVC_t *gvc = gvContext();
 		gvLayout( gvc, g, "dot" );
 		
 		const auto imgPath = takeImgPath( filePath );
@@ -59,6 +59,20 @@ namespace GraphCreator {
 		return ( gvFreeContext( gvc ) );
 	}
 	
+	Converter::Graph Converter::takeGraph( FILE *fp ) const {
+		Agdisc_t mydisc;
+		Agiodisc_t myiodisc;
+
+		mydisc.mem = NULL;  // use system default
+		mydisc.id = NULL;   // use system default
+		mydisc.io = &myiodisc;
+		myiodisc.afread = reader;
+		myiodisc.putstr = NULL;  // only need to set if calling gvRender()
+		myiodisc.flush = NULL;   // only need to set if calling gvRender()
+
+		return agread( fp, &mydisc );
+	}
+
 	std::string Converter::takeImgPath( const std::string &filePath ) const {
 		auto pos = filePath.find_last_of( '.' ) + 1;
 		std::string imgPath( std::begin( filePath )

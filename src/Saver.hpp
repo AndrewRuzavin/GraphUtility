@@ -15,12 +15,12 @@ namespace GraphCreator {
 				QMARK,
 				ELEM_OPEN,
 				ELEM_CLOSE,
-				UNIDIR_EDGE,
-				BIDIE_EDGE,
+				EDGE,
 				COLOR,
 				LABEL,
 				INDENT,
-				
+				PENWIDTH,
+
 				AMOUNT_OF_ELEMS
 			};
 			using FileFieldPartElem = std::string;
@@ -52,12 +52,15 @@ namespace GraphCreator {
 			
 			const std::string& takeColor( size_t colorId );
 			void addNewColor( const size_t colorId );
+			std::string createColor() const;
+			__uint8_t getRandValue( const __uint8_t minValue, const __uint8_t maxValue ) const;
 			std::string doubleToStr( double value );
 			
 			mutable std::ofstream ofs;
 			FileFieldParts fieldParts;
 			mutable int indentNum = 0;
-			std::map<char, std::string> colors;
+			std::map<__uint8_t, std::string> colors;
+			const short cNodeThickness = 0;
 	};
 
 }

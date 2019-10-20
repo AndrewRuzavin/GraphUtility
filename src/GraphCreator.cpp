@@ -29,7 +29,6 @@ namespace GraphCreator {
 		outputInfo();
 		while ( true ) {
 			
-			
 			convert();
 			break;
 		}

@@ -73,9 +73,9 @@ namespace GraphCreator {
 			virtual size_t takeNumber( const size_t start, const size_t end ) const = 0;
 			
 			const std::string filePath;
-			std::stringstream contents;	//TODO: нужна проверка того, что поток был загружен
+			std::stringstream contents;
 			mutable bool isLoadedFlag = false;
-			const size_t EOFields = -1;
+			const size_t cEOFields = -1;
 	};
 	
 }

@@ -33,7 +33,7 @@ namespace GraphCreator {
 	
 	void Loader::load() {
 		readContents();
-		fillHeaderFields();		
+		fillHeaderFields();
 	}
 	
 	void Loader::readContents() {

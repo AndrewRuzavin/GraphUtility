@@ -32,18 +32,18 @@ namespace GraphCreator {
 	void Saver::fillFieldParts() {
 		fieldParts.clear();
 		fieldParts.reserve( AMOUNT_OF_ELEMS );
-		fieldParts.push_back( "graph " );		//	HEADER_START
+		fieldParts.push_back( "digraph " );		//	HEADER_START
 		fieldParts.push_back( "{" );			//	UNIT_OPEN
 		fieldParts.push_back( "}" );			//	UNIT_CLOSE
 		fieldParts.push_back( ";\n" );			//	EOS
 		fieldParts.push_back( "\"" );			//	QMARK
 		fieldParts.push_back( " [" );			//	ELEM_OPEN
 		fieldParts.push_back( "]" );			//	ELEM_CLOSE
-		fieldParts.push_back( " -> " );			//	UNIDIR_EDGE
-		fieldParts.push_back( " -- " );			//	BIDIE_EDGE
+		fieldParts.push_back( " -> " );			//	EDGE
 		fieldParts.push_back( "color=\"#" );	//	COLOR
 		fieldParts.push_back( "label=" );		//	LABEL
 		fieldParts.push_back( "\t" );			//	INDENT
+		fieldParts.push_back( "penwidth=" );	//	PENWIDTH
 	}
 	
 	void Saver::createDir() const {
@@ -125,7 +125,9 @@ namespace GraphCreator {
 		outputStr.append( getPart( ELEM_OPEN ) );
 		outputStr.append( getPart( COLOR ) );
 		outputStr.append( takeColor( vertex.color ) );
-		outputStr.append( getPart( QMARK ) );		
+		outputStr.append( getPart( QMARK ) );
+		outputStr.append( getPart( PENWIDTH ) );
+		outputStr.append( std::to_string( cNodeThickness ) );
 		outputStr.append( getPart( ELEM_CLOSE ) );
 		outputStr.append( getPart( EOS ) );
 		
@@ -137,9 +139,7 @@ namespace GraphCreator {
 		
 		std::string outputStr( getIndent() );
 		outputStr.append( std::to_string( edge.srcId ) );
-//		outputStr.append( getPart( UNIDIR_EDGE ) );	//Graphviz не ест "->"
-		outputStr.append( getPart( BIDIE_EDGE ) );
-		
+		outputStr.append( getPart( EDGE ) );
 		outputStr.append( std::to_string( edge.dstId ) );
 		outputStr.append( getPart( ELEM_OPEN ) );
 		outputStr.append( getPart( LABEL ) );
@@ -158,23 +158,41 @@ namespace GraphCreator {
 	}
 	
 	void Saver::addNewColor( const size_t colorId ) {
-		auto minValue = 40;
-		auto maxValue = 256;
-		
-		auto r = rand() % ( maxValue - minValue ) + minValue;
-		auto b = rand() % ( maxValue - minValue ) + minValue;
-		auto g = rand() % ( maxValue - minValue ) + minValue;
-		
-		__int64_t color = r;
+		colors[colorId] = createColor();
+	}
+
+	std::string Saver::createColor() const {
+		const __uint8_t minValue = 0;
+		const __uint8_t maxValue = 255;
+		const __uint8_t minDiffCoef = 50;
+		__uint8_t r, g, b;
+		do {
+			r = getRandValue( minValue, maxValue );
+			g = getRandValue( minValue, maxValue );
+			b = getRandValue( minValue, maxValue );
+
+			auto bufVal0 = r > g ? r % g : g % r;
+			auto bufVal1 = r > b ? r % b : b % r;
+			auto bufVal2 = g > b ? g % b: b % g;
+
+			if ( ( bufVal0 + bufVal1 + bufVal2 ) > minDiffCoef ) {
+				break;
+			}
+
+		} while ( true );
+
+		__uint32_t color = r;
 		color = ( color << 8 ) + g;
 		color = ( color << 8 ) + b;
 		color = ( color << 8 ) + 255;
-		
+
 		std::stringstream stream;
 		stream << std::hex << color;
-		std::string colorStr( stream.str() );
-		
-		colors[colorId] = colorStr;
+		return std::string( stream.str() );
+	}
+
+	__uint8_t Saver::getRandValue( const __uint8_t minValue, const __uint8_t maxValue ) const {
+		return rand() % ( maxValue + 1 - minValue ) + minValue;
 	}
 
 	std::string Saver::doubleToStr( double value ) {

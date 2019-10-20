@@ -29,7 +29,7 @@ namespace GraphCreator {
 	}
 	
 	size_t LoaderI::eof() const {
-		return EOFields;
+		return cEOFields;
 	}
 	
 	bool LoaderI::isThisTheEnd( const FileFieldFormat &container, const FileFieldFormatIter &iter ) const {

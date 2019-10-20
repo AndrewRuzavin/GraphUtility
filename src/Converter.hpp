@@ -1,9 +1,11 @@
 #pragma once
 #include "ConverterI.hpp"
+#include <graphviz/gvc.h>
 
 namespace GraphCreator {
 	
 	class Converter : public ConverterI {
+			using Graph = Agraph_t*;
 		public:
 			explicit Converter( std::unique_ptr<LoaderI> &loader, std::unique_ptr<SaverI> &saver );
 			
@@ -16,6 +18,7 @@ namespace GraphCreator {
 			void convertVertices();
 			void convertEdges();
 			bool saveImageGV( const std::string &filePath ) const;
+			Graph takeGraph( FILE *fp ) const;
 			std::string takeImgPath( const std::string &filePath ) const;
 			
 			static const std::string IMG_FORMAT;

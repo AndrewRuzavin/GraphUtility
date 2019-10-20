@@ -7,8 +7,6 @@ namespace GraphCreator {
 	
 	class ConverterI {
 		public:
-	//		using FileContents = std::stringstream;
-	
 			explicit ConverterI( std::unique_ptr<LoaderI> &loader, std::unique_ptr<SaverI> &saver );
 			virtual ~ConverterI() = 0;
 			
