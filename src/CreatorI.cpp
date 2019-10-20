@@ -1,25 +1,38 @@
 #include "CreatorI.hpp"
-#include <iostream>
 #include "FileException.hpp"
 
 namespace GraphCreator {
 	
-	CreatorI::~CreatorI() {}
-	
-	void CreatorI::placeCurrentDir( const std::string &currentDir ) {
+	CreatorI::CreatorI( const std::string &currentDir, const std::string &filePath )
+			: filePath( filePath ) {
+
 		this->currentDir = takeDirPath( currentDir );
 	}
+
+	CreatorI::~CreatorI() {}
 	
-	void CreatorI::convert() {
-		converter->convert();
+	std::string CreatorI::takeDirPath( const std::string &currentDir ) const {
+
+		auto posOfEndPath = currentDir.find_last_of( "/" ) + 1;
+
+		return std::string( std::begin( currentDir )
+							  , std::begin( currentDir ) + posOfEndPath );
+	}
+
+	void CreatorI::convertToGraph() {
+		graphPath.clear();
+
+		auto converter = takeConverter();
+		converter->convertToGraph();
+		graphPath = converter->getGraphPath();
 	}
 	
-	void CreatorI::exceptionHandler( const std::exception &e ) const {
-		auto qwe = e.what();
-		std::cout << "\nERROR: " << e.what() << std::endl;
-		exit( 1 );
+	std::unique_ptr<ConverterI> CreatorI::takeConverter() const {
+		auto loader = takeLoader();
+		auto saver = createSaver();
+		return createConverter( std::move( loader ), std::move( saver ) );
 	}
-	
+
 	std::unique_ptr<LoaderI> CreatorI::takeLoader() const {
 		auto loader = createLoader();
 		loader->load();
@@ -34,11 +47,8 @@ namespace GraphCreator {
 							  , std::begin( filePath ) + posOfNameEnd );
 	}
 	
-	std::string CreatorI::takeDirPath( const std::string &currentDir ) const {
-		
-		auto posOfEndPath = currentDir.find_last_of( "/" ) + 1;
-		
-		return std::string( std::begin( currentDir )
-							  , std::begin( currentDir ) + posOfEndPath );
+	std::string CreatorI::getGraphPath() const {
+		return graphPath;
 	}
+
 }

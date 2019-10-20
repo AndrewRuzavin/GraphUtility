@@ -8,16 +8,20 @@ namespace GraphCreator {
 	
 	class CreatorI {
 		public:
-			CreatorI() = default;
+			CreatorI( const std::string &currentDir, const std::string &filePath );
 			virtual ~CreatorI() = 0;
 			
-			virtual void exec( const std::string &currentDir, const std::string &filePath ) = 0;
-			
+			virtual std::unique_ptr<ConverterI> takeConverter() const;
+
+			void convertToGraph();
+
+			std::string getGraphPath() const;
+
+		private:
+			std::string takeDirPath( const std::string &currentDir ) const;
+
 		protected:
-			void exceptionHandler( const std::exception &e ) const;
-			void placeCurrentDir( const std::string &currentDir );
 			std::string takeNameOfFile() const;
-			void convert();
 			
 			virtual std::unique_ptr<LoaderI> createLoader() const = 0;
 			virtual std::unique_ptr<SaverI> createSaver() const = 0;
@@ -25,13 +29,10 @@ namespace GraphCreator {
 																 , std::unique_ptr<SaverI> saver  ) const = 0;
 			
 			virtual std::unique_ptr<LoaderI> takeLoader() const;
-			
+
 			std::string currentDir;
 			std::string filePath;
-			std::unique_ptr<ConverterI> converter;
-			
-		private:
-			std::string takeDirPath( const std::string &currentDir ) const;			
+			std::string graphPath;
 	};
 	
 }

@@ -1,18 +1,20 @@
 #include <iostream>
-#include "GraphCreator.hpp"
+#include "Menu.hpp"
 
 int main( int argc, char *argv[] ) {
 	
 	if ( 2 != argc ) {
+		std::cout << "ERROR: Invalid number of arguments.\n";
 		exit( -1 );
 	}
 	
-	auto creator = GraphCreator::createCreator();
 	const auto dirPathIndex = 0;
 	const auto filePathIndex = 1;
 	const std::string currentDir( argv[dirPathIndex] );
 	const std::string filePath( argv[filePathIndex] );
-	creator->exec( currentDir, filePath );
+
+	GraphCreator::Menu menu( currentDir, filePath );
+	menu.exec();
 	
 	return 0;
 }

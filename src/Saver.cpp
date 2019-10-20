@@ -14,7 +14,7 @@ namespace GraphCreator {
 		close();
 	}
 
-	void Saver::open() {		
+	void Saver::open() {
 		fillFieldParts();
 		createDir();
 		createFullPath();
@@ -191,7 +191,7 @@ namespace GraphCreator {
 	}
 
 	__uint8_t Saver::getRandValue( const __uint8_t minValue, const __uint8_t maxValue ) const {
-		return rand() % ( maxValue + 1 - minValue ) + minValue;
+		return rand() % ( maxValue - minValue ) + minValue + 1;
 	}
 
 	std::string Saver::doubleToStr( double value ) {

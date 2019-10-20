@@ -27,6 +27,11 @@ namespace GraphCreator {
 		isLoadedFlag = false;
 		throw FileException( filePath, type );
 	}
+
+	void LoaderI::load( const std::string &filePath ) {
+		this->filePath = filePath;
+		load();
+	}
 	
 	size_t LoaderI::eof() const {
 		return cEOFields;
@@ -67,5 +72,9 @@ namespace GraphCreator {
 		return fileFieldsInfo.headerInfo.edgeNum;		
 	}
 	
-	
+	void LoaderI::clear() {
+		isLoadedFlag = false;
+		contents.str( "" );
+	}
+
 }

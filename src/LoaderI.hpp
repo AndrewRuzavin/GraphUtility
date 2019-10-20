@@ -48,6 +48,7 @@ namespace GraphCreator {
 			explicit LoaderI( const std::string filePath );
 			virtual ~LoaderI() = 0;
 			
+			virtual void load( const std::string &filePath );
 			virtual void load() = 0;
 			
 			virtual VertexInfo readNextVertexInfo() = 0;
@@ -63,6 +64,7 @@ namespace GraphCreator {
 			bool isLoaded() const;
 			size_t getVNum() const;
 			size_t getENum() const;
+			void clear();
 			
 		protected:
 			virtual void fillFileHeaderFields() = 0;
@@ -72,7 +74,7 @@ namespace GraphCreator {
 			virtual size_t takeIndex( const std::string &str, const size_t pos ) const = 0;
 			virtual size_t takeNumber( const size_t start, const size_t end ) const = 0;
 			
-			const std::string filePath;
+			std::string filePath;
 			std::stringstream contents;
 			mutable bool isLoadedFlag = false;
 			const size_t cEOFields = -1;

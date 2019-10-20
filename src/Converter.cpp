@@ -1,11 +1,10 @@
 #include "Converter.hpp"
 #include "FileException.hpp"
-#include <iostream>
 
 namespace GraphCreator {
 	
-	const std::string Converter::IMG_FORMAT = "png";
-	
+	const std::string Converter::GRAPH_FORMAT = "svg";
+
 	Converter::Converter( std::unique_ptr<LoaderI> &loader, std::unique_ptr<SaverI> &saver ) 
 			: ConverterI( loader, saver ) {}
 	
@@ -17,17 +16,20 @@ namespace GraphCreator {
 		return loader->getENum();
 	}
 	
-	void Converter::convert() {		
-		saver->open();
-		
-		convertVertices();
-		convertEdges();
-		
-		saver->close();
-		
-		saveImageGV( saver->getFullName() );
+	void Converter::convertToGraph() {
+		createGraphInputFile();
+		saveGraph( saver->getFullName() );
 	}
 	
+	void Converter::createGraphInputFile() {
+		saver->open();
+
+		convertVertices();
+		convertEdges();
+
+		saver->close();
+	}
+
 	void Converter::convertVertices() {
 		while( !loader->isVertexInfoEnd() ) {
 			auto vertex = loader->readNextVertexInfo();
@@ -46,14 +48,14 @@ namespace GraphCreator {
 		return fread(buf, 1, bufsize, (FILE*)chan);
 	}
 
-	bool Converter::saveImageGV( const std::string &filePath ) const {
+	bool Converter::saveGraph( const std::string &filePath ) {
 		FILE *fp = fopen( filePath.c_str(), "r" );
 		auto g = takeGraph( fp );
 		GVC_t *gvc = gvContext();
 		gvLayout( gvc, g, "dot" );
 		
-		const auto imgPath = takeImgPath( filePath );
-		gvRender( gvc, g, IMG_FORMAT.c_str(), fopen( imgPath.c_str(), "w" ) );
+		graphPath = takeGraphPath( filePath );
+		gvRender( gvc, g, GRAPH_FORMAT.c_str(), fopen( graphPath.c_str(), "w" ) );
 		gvFreeLayout( gvc, g );
 		agclose( g );
 		return ( gvFreeContext( gvc ) );
@@ -73,13 +75,17 @@ namespace GraphCreator {
 		return agread( fp, &mydisc );
 	}
 
-	std::string Converter::takeImgPath( const std::string &filePath ) const {
+	std::string Converter::takeGraphPath( const std::string &filePath ) const {
 		auto pos = filePath.find_last_of( '.' ) + 1;
-		std::string imgPath( std::begin( filePath )
+		std::string resGraphPath( std::begin( filePath )
 							 , std::begin( filePath ) + pos );
-		imgPath.append( IMG_FORMAT );
+		resGraphPath.append( GRAPH_FORMAT );
 		
-		return imgPath;
+		return resGraphPath;
 	}
-			
+
+	std::string Converter::getGraphPath() const {
+		return graphPath;
+	}
+
 }

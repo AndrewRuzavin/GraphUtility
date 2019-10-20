@@ -30,7 +30,7 @@ namespace GraphCreator {
 		fileFieldsInfo.fileEdgeInfoFields.push_back( ", " );
 		fileFieldsInfo.fileEdgeInfoFields.push_back( "}" );
 	}
-	
+		
 	void Loader::load() {
 		readContents();
 		fillHeaderFields();

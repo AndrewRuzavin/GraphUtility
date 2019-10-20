@@ -17,7 +17,8 @@ SOURCES += \
     Converter.cpp \
     src/FileException.cpp \
     src/SaverI.cpp \
-    src/Saver.cpp
+    src/Saver.cpp \
+    src/Menu.cpp
 
 HEADERS += \
     CreatorI.hpp \
@@ -29,7 +30,8 @@ HEADERS += \
     src/FileException.hpp \
     src/SaverI.hpp \
     src/Saver.hpp \
-    src/InfoStructs.hpp
+    src/InfoStructs.hpp \
+    src/Menu.hpp
 
 DISTFILES += \
     introduction/1.txt \
