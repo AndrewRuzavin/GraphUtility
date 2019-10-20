@@ -79,7 +79,7 @@ namespace GraphCreator {
 							 , std::begin( filePath ) + pos );
 		imgPath.append( IMG_FORMAT );
 		
-		return std::move( imgPath );
+		return imgPath;
 	}
 			
 }

@@ -13,7 +13,7 @@ namespace GraphCreator {
 	std::stringstream LoaderI::RAIILoader::read() {
 		std::stringstream buf;
 		buf << is.rdbuf();
-		return std::move( buf );
+		return buf;
 	}
 	
 	

@@ -101,7 +101,7 @@ namespace GraphCreator {
 		auto valStart = contents.str().begin() + start;
 		auto valEnd = contents.str().begin() + end;
 		
-		return std::move( std::string( valStart, valEnd ) );
+		return std::string( valStart, valEnd );
 	}
 	
 	double Loader::takeDNumber( const size_t start, const size_t end ) const {

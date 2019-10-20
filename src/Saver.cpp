@@ -84,21 +84,21 @@ namespace GraphCreator {
 	
 	std::string Saver::getUnitOpenPart() const {
 		++indentNum;
-		return std::move( getPart( UNIT_OPEN ) );
+		return getPart( UNIT_OPEN );
 	}
 	
 	std::string Saver::getUnitClosePart() const {
 		
 		if ( indentNum > 0) {
 			--indentNum;
-			return std::move( getIndent() + getPart( UNIT_CLOSE ) );
+			return getIndent() + getPart( UNIT_CLOSE );
 		} else {
-			return std::move( std::string() );
+			return std::string();
 		}
 	}
 	
 	std::string Saver::getNewLine( FieldsPart partType ) const {
-		return std::move( getIndent() + getPart( partType ) );
+		return getIndent() + getPart( partType );
 	}
 	
 	std::string Saver::getIndent() const {
@@ -106,7 +106,7 @@ namespace GraphCreator {
 		for ( auto i = 0; i < indentNum; ++i ) {
 			indentStr.append( getPart( INDENT ) );
 		}
-		return std::move( indentStr );
+		return indentStr;
 	}
 	
 	const std::string& Saver::getPart( FieldsPart partType ) const {
@@ -198,7 +198,7 @@ namespace GraphCreator {
 	std::string Saver::doubleToStr( double value ) {
 		std::string str( std::to_string( value ) );
 		if ( str.empty() ) {
-			return std::move( str );
+			return str;
 		}
 		for ( auto iter = std::end( str ) - 1; iter != std::begin( str ); --iter ) {
 			if ( ( '0' == *iter ) 
@@ -214,6 +214,6 @@ namespace GraphCreator {
 			}
 		}
 		
-		return std::move( str );
+		return str;
 	}
 }
