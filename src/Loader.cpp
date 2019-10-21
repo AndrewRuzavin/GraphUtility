@@ -73,7 +73,6 @@ namespace GraphCreator {
 				throwException( FileException::WrongFormat );
 			}
 			
-			size_t value = 0;
 			readNext( *(fieldIter - 1)
 					  , *fieldIter
 					  , handler );

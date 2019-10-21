@@ -22,17 +22,36 @@ namespace GraphCreator {
 	}
 	
 	void Converter::createGraphInputFile( const GraphSettingFields &settings ) {
-		const auto edgesWeights = takeEdgesWeights( settings );
+		const auto lowerBoundsWithLineThicks = takeLowerBoundsWithLineThicks( settings );
 
 		saver->open();
 
 		convertVertices( settings );
-		convertEdges( settings );
+		convertEdges( settings, lowerBoundsWithLineThicks );
 
 		saver->close();
 	}
 
-	std::list<double> Converter::takeEdgesWeights( const GraphSettingFields &settings  ) const {
+	Converter::LowerBoundsWithLineThicks Converter::takeLowerBoundsWithLineThicks( const GraphSettingFields &settings ) const {
+		auto edgesWeight = takeEdgesWeights( settings );
+
+		LowerBoundsWithLineThicks lowerBoundsWithLineThicks;
+		size_t currLineThick = 1;
+		lowerBoundsWithLineThicks.push_back( std::make_pair( edgesWeight.front(), currLineThick ) );
+		for ( auto currLowerBoundIter = std::begin( edgesWeight ), currWeighIter = std::begin( edgesWeight );
+				currWeighIter != std::end( edgesWeight );
+				++currWeighIter ) {
+
+			if ( div( *currWeighIter, *currLowerBoundIter ) > 2 ) {
+				currLowerBoundIter = currWeighIter;
+				++currLineThick;
+				lowerBoundsWithLineThicks.push_back( std::make_pair( *currLowerBoundIter, currLineThick ) );
+			}
+		}
+		return lowerBoundsWithLineThicks;
+	}
+
+	std::list<double> Converter::takeEdgesWeights( const GraphSettingFields &settings ) const {
 		auto edges = loader->readEdges();
 		std::list<double> edgesWeight;
 		if ( !edges.empty() ) {
@@ -43,7 +62,13 @@ namespace GraphCreator {
 			}
 		}
 		edgesWeight.unique();
+		edgesWeight.sort();
 		return edgesWeight;
+	}
+
+	double Converter::div( const double firstVal, const double secondVal ) const {
+		return std::max( std::fabs( firstVal ), std::fabs( secondVal ) )
+				/ std::min( std::fabs( firstVal ), std::fabs( secondVal ) );
 	}
 
 	void Converter::convertVertices( const GraphSettingFields &settings ) {
@@ -75,12 +100,13 @@ namespace GraphCreator {
 					&& val <= range.second;
 		}
 
-	void Converter::convertEdges( const GraphSettingFields &settings ) {
+	void Converter::convertEdges( const GraphSettingFields &settings, const LowerBoundsWithLineThicks &lowerBoundWithLineThick ) {
 		while( !loader->isEdgeInfoEnd() ) {
 			auto edge = loader->readNextEdgeInfo();
 
 			if ( checkEdge( edge, settings ) ) {
-				saver->writeEdge( edge );
+				const auto lineThick = takeLineThick( edge.weight, lowerBoundWithLineThick );
+				saver->writeEdge( edge, lineThick );
 			}
 		}
 	}
@@ -97,6 +123,18 @@ namespace GraphCreator {
 		}
 
 		return true;
+	}
+
+	size_t Converter::takeLineThick( const double weight, const LowerBoundsWithLineThicks &lowerBoundWithLineThick ) const {
+		for ( auto iter = std::rbegin( lowerBoundWithLineThick );
+				iter != std::rend( lowerBoundWithLineThick );
+				++iter ) {
+
+			if ( iter->first <= weight ) {
+				return iter->second;
+			}
+		}
+		return 1;
 	}
 
 	static int reader( void *chan, char *buf, int bufsize ) {

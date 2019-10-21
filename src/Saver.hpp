@@ -34,7 +34,7 @@ namespace GraphCreator {
 			bool isOpen() const override;
 			
 			void writeVertex( const VertexInfo &vertex ) override;
-			void writeEdge( const EdgeInfo &edge ) override;
+			void writeEdge( const EdgeInfo &edge, const size_t lineThick ) override;
 			void close() override;
 			
 		private:

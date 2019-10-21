@@ -57,9 +57,6 @@ namespace GraphCreator {
 	void Saver::fillHeader() {
 		ofs << getNewLine( HEADER_START ) << fileName << " ";
 		ofs << getUnitOpenPart() << "\n";
-//		ofs << getUnitOpenPart() << "node[width=0.5];\n";
-//		ofs << getUnitOpenPart() << "ranksep=10;\n";
-//		ofs << getUnitOpenPart() << "nodesep=10;\n";
 	}
 	
 	void Saver::close() {
@@ -132,7 +129,7 @@ namespace GraphCreator {
 		ofs.write( outputStr.c_str(), outputStr.size() );
 	}
 	
-	void Saver::writeEdge( const EdgeInfo &edge ) {
+	void Saver::writeEdge( const EdgeInfo &edge, const size_t lineThick  ) {
 		processingAttempt();
 		
 		std::string outputStr( getIndent() );
@@ -142,6 +139,8 @@ namespace GraphCreator {
 		outputStr.append( getPart( ELEM_OPEN ) );
 		outputStr.append( getPart( LABEL ) );
 		outputStr.append( doubleToStr( edge.weight ) );
+		outputStr.append( ' ' + getPart( PENWIDTH ) );
+		outputStr.append( std::to_string( lineThick * 0.5 ) );
 		outputStr.append( getPart( ELEM_CLOSE ) );
 		outputStr.append( getPart( EOS ) );
 		

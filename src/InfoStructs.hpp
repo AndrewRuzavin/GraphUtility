@@ -1,4 +1,6 @@
 #pragma once
+#include <math.h>
+#include <limits>
 
 namespace GraphCreator {
 	
@@ -18,7 +20,12 @@ namespace GraphCreator {
 			double weight = 0;
 
 			bool operator==( const EdgeInfo &obj ) {
-				return this->weight == obj.weight;
+				return fabs( this->weight - obj.weight )
+						< std::numeric_limits<double>::epsilon();
+			}
+
+			bool operator<( const EdgeInfo &obj ) {
+				return this->weight < obj.weight;
 			}
 	};
 	

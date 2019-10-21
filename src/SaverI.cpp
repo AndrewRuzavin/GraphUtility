@@ -4,7 +4,6 @@ namespace GraphCreator {
 
 	const std::string SaverI::DIR_NAME = "resultFiles/";
 	const std::string FORMAT_NAME = "circo";
-//	const std::string FORMAT_NAME = "sfdp";
 
 	SaverI::SaverI( const std::string &dirPath, const std::string &fileName ) 
 			: dirPath( dirPath ), fileName( fileName ) {}

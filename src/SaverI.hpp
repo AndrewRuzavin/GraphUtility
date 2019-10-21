@@ -14,7 +14,7 @@ namespace GraphCreator {
 			virtual bool isOpen() const = 0;
 			
 			virtual void writeVertex( const VertexInfo &vertex ) = 0;
-			virtual void writeEdge( const EdgeInfo &edge ) = 0;
+			virtual void writeEdge( const EdgeInfo &edge, const size_t lineThick ) = 0;
 			virtual void close() = 0;
 			
 			std::string getFullName() const;
