@@ -18,8 +18,13 @@ namespace GraphCreator {
 
 		private:
 			void createGraphInputFile( const GraphSettingFields &settings );
+			std::list<double> takeEdgesWeights( const GraphSettingFields &settings ) const;
 			void convertVertices( const GraphSettingFields &settings );
+			bool checkVertex( const VertexInfo &vertex, const GraphSettingFields &settings ) const;
+			template<class T>
+				bool compare( const T &val, const std::pair<T, T> &range ) const;
 			void convertEdges( const GraphSettingFields &settings );
+			bool checkEdge( const EdgeInfo &edge, const GraphSettingFields &settings ) const;
 			bool saveGraph( const std::string &filePath );
 			Graph takeGraph( FILE *fp ) const;
 			std::string takeGraphPath( const std::string &filePath ) const;

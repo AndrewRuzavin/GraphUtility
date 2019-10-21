@@ -29,7 +29,7 @@ namespace GraphCreator {
 			std::string fullFileName;
 			
 			static const std::string DIR_NAME;
-			static const std::string FORMAT_NAME;
 	};
 	
+	extern const std::string FORMAT_NAME;
 }

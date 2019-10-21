@@ -16,6 +16,10 @@ namespace GraphCreator {
 			size_t srcId = 0;
 			size_t dstId = 0;
 			double weight = 0;
+
+			bool operator==( const EdgeInfo &obj ) {
+				return this->weight == obj.weight;
+			}
 	};
 	
 }

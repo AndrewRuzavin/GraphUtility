@@ -17,11 +17,13 @@ namespace GraphCreator {
 	}
 	
 	void Converter::convertToGraph( const GraphSettingFields &settings ) {
-		createGraphInputFile( settings);
+		createGraphInputFile( settings );
 		saveGraph( saver->getFullName() );
 	}
 	
 	void Converter::createGraphInputFile( const GraphSettingFields &settings ) {
+		const auto edgesWeights = takeEdgesWeights( settings );
+
 		saver->open();
 
 		convertVertices( settings );
@@ -30,18 +32,71 @@ namespace GraphCreator {
 		saver->close();
 	}
 
+	std::list<double> Converter::takeEdgesWeights( const GraphSettingFields &settings  ) const {
+		auto edges = loader->readEdges();
+		std::list<double> edgesWeight;
+		if ( !edges.empty() ) {
+			for ( const auto &edge : edges ) {
+				if ( checkEdge( edge, settings ) ) {
+					edgesWeight.push_back( edge.weight );
+				}
+			}
+		}
+		edgesWeight.unique();
+		return edgesWeight;
+	}
+
 	void Converter::convertVertices( const GraphSettingFields &settings ) {
 		while( !loader->isVertexInfoEnd() ) {
 			auto vertex = loader->readNextVertexInfo();
-			saver->writeVertex( vertex );
+
+			if ( checkVertex( vertex, settings ) ) {
+				saver->writeVertex( vertex );
+			}
 		}
 	}
 	
+	bool Converter::checkVertex( const VertexInfo &vertex, const GraphSettingFields &settings ) const {
+		vertex.id;
+
+		if ( !compare( vertex.id, settings.vertexIdBorder ) ) {
+			return false;
+		}
+		if ( !compare( static_cast<short>( vertex.color ), settings.vertexColorBorder ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	template<class T>
+		bool Converter::compare( const T &val, const std::pair<T, T> &range ) const {
+			return range.first <= val
+					&& val <= range.second;
+		}
+
 	void Converter::convertEdges( const GraphSettingFields &settings ) {
 		while( !loader->isEdgeInfoEnd() ) {
 			auto edge = loader->readNextEdgeInfo();
-			saver->writeEdge( edge );
+
+			if ( checkEdge( edge, settings ) ) {
+				saver->writeEdge( edge );
+			}
 		}
+	}
+
+	bool Converter::checkEdge( const EdgeInfo &edge, const GraphSettingFields &settings ) const {
+		if ( !compare( edge.srcId, settings.vertexIdBorder ) ) {
+			return false;
+		}
+		if ( !compare( edge.dstId, settings.vertexIdBorder ) ) {
+			return false;
+		}
+		if ( !compare( edge.weight, settings.edgeWeightBorder ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	static int reader( void *chan, char *buf, int bufsize ) {
@@ -52,8 +107,9 @@ namespace GraphCreator {
 		FILE *fp = fopen( filePath.c_str(), "r" );
 		auto g = takeGraph( fp );
 		GVC_t *gvc = gvContext();
-		gvLayout( gvc, g, "dot" );
-		
+
+		gvLayout( gvc, g, FORMAT_NAME.c_str() );
+
 		graphPath = takeGraphPath( filePath );
 		gvRender( gvc, g, GRAPH_FORMAT.c_str(), fopen( graphPath.c_str(), "w" ) );
 		gvFreeLayout( gvc, g );

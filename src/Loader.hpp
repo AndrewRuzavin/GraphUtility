@@ -9,9 +9,10 @@ namespace GraphCreator {
 			~Loader() = default;
 			
 			void load() override;
+			std::list<EdgeInfo> readEdges() override;
 			VertexInfo readNextVertexInfo() override;
 			EdgeInfo readNextEdgeInfo() override;
-			
+
 		private:
 			void readContents();
 			void fillFileHeaderFields() override;
@@ -26,8 +27,8 @@ namespace GraphCreator {
 			template<class Handler>
 				void readNext( const std::string &currentField, const std::string &nextField, Handler handler );
 			size_t takeIndex( const std::string &str, const size_t pos ) const override;
-			std::string strNum( const size_t start, const size_t end ) const;
 			double takeDNumber( const size_t start, const size_t end ) const;
+			std::string strNum( const size_t start, const size_t end ) const;
 			
 			VertexInfo readNextInfo();
 			

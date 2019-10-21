@@ -1,5 +1,7 @@
 #include "Loader.hpp"
 
+#include <set>
+
 namespace GraphCreator {
 	
 	Loader::Loader( const std::string &filePath ) 
@@ -99,20 +101,42 @@ namespace GraphCreator {
 		}
 	}
 	
-	std::string Loader::strNum( const size_t start, const size_t end ) const {
-		auto valStart = contents.str().begin() + start;
-		auto valEnd = contents.str().begin() + end;
-		
-		return std::string( valStart, valEnd );
-	}
-	
 	double Loader::takeDNumber( const size_t start, const size_t end ) const {
-		
+
 		auto fieldNum = strNum( start, end );
-		
+
 		return std::stod( fieldNum );
 	}
+
+	std::string Loader::strNum( const size_t start, const size_t end ) const {
+		auto str = contents.str();
+
+		auto valStart = std::begin( str ) + start;
+		auto valEnd = std::begin( str ) + end;
+
+		std::string resultStr( valStart, valEnd );
+		return resultStr;
+	}
 	
+	std::list<EdgeInfo> Loader::readEdges() {
+		auto buf = fileFieldsInfo;
+
+		while( !isVertexInfoEnd() ) {
+			readNextVertexInfo();
+		}
+
+		std::list<EdgeInfo> edges;
+		while( !isEdgeInfoEnd() ) {
+			auto edge = readNextEdgeInfo();
+			edges.push_back( edge );
+		}
+		edges.unique();
+
+		fileFieldsInfo = buf;
+
+		return edges;
+	}
+
 	VertexInfo Loader::readNextVertexInfo() {
 		processingAttempt();
 		VertexInfo info;
@@ -145,6 +169,8 @@ namespace GraphCreator {
 	size_t Loader::takeNumber( const size_t start, const size_t end ) const {
 		auto fieldNum = strNum( start, end );
 		
+		volatile auto qwe = contents.str();
+
 		return std::stoi( fieldNum );
 	}
 	
@@ -175,4 +201,5 @@ namespace GraphCreator {
 		
 		return value;
 	}
+
 }

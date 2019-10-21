@@ -51,14 +51,15 @@ namespace GraphCreator {
 	
 	void Saver::createFullPath() {
 		fullFileName.clear();
-		fullFileName.append( DIR_NAME );
-		fullFileName.append( fileName );
-		fullFileName.append( FORMAT_NAME );
+		fullFileName.append( DIR_NAME + fileName + '.' + FORMAT_NAME );
 	}
 	
 	void Saver::fillHeader() {
 		ofs << getNewLine( HEADER_START ) << fileName << " ";
 		ofs << getUnitOpenPart() << "\n";
+//		ofs << getUnitOpenPart() << "node[width=0.5];\n";
+//		ofs << getUnitOpenPart() << "ranksep=10;\n";
+//		ofs << getUnitOpenPart() << "nodesep=10;\n";
 	}
 	
 	void Saver::close() {

@@ -1,10 +1,11 @@
 #include "SaverI.hpp"
 
 namespace GraphCreator {
-	
+
 	const std::string SaverI::DIR_NAME = "resultFiles/";
-	const std::string SaverI::FORMAT_NAME = ".dot";
-	
+	const std::string FORMAT_NAME = "circo";
+//	const std::string FORMAT_NAME = "sfdp";
+
 	SaverI::SaverI( const std::string &dirPath, const std::string &fileName ) 
 			: dirPath( dirPath ), fileName( fileName ) {}
 	

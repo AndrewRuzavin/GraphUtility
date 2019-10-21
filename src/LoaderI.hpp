@@ -4,6 +4,7 @@
 #include "FileException.hpp"
 #include "InfoStructs.hpp"
 #include <fstream>
+#include <list>
 
 namespace GraphCreator {
 	
@@ -51,6 +52,7 @@ namespace GraphCreator {
 			virtual void load( const std::string &filePath );
 			virtual void load() = 0;
 			
+			virtual std::list<EdgeInfo> readEdges() = 0;
 			virtual VertexInfo readNextVertexInfo() = 0;
 			virtual EdgeInfo readNextEdgeInfo() = 0;
 			
