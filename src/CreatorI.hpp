@@ -8,12 +8,14 @@ namespace GraphCreator {
 	
 	class CreatorI {
 		public:
+			using GraphSettingFields = ConverterI::GraphSettingFields;
+
 			CreatorI( const std::string &currentDir, const std::string &filePath );
 			virtual ~CreatorI() = 0;
 			
 			virtual std::unique_ptr<ConverterI> takeConverter() const;
 
-			void convertToGraph();
+			void convertToGraph( const GraphSettingFields &settings );
 
 			std::string getGraphPath() const;
 

@@ -19,11 +19,11 @@ namespace GraphCreator {
 							  , std::begin( currentDir ) + posOfEndPath );
 	}
 
-	void CreatorI::convertToGraph(/*need struct with diapason*/) {
+	void CreatorI::convertToGraph( const GraphSettingFields &settings ) {
 		graphPath.clear();
 
 		auto converter = takeConverter();
-		converter->convertToGraph();
+		converter->convertToGraph( settings );
 		graphPath = converter->getGraphPath();
 	}
 	

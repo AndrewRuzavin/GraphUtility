@@ -2,8 +2,8 @@
 
 namespace GraphCreator {
 	
-	const std::string SaverI::dirName = "resultFiles/";
-	const std::string SaverI::formatName = ".dot";
+	const std::string SaverI::DIR_NAME = "resultFiles/";
+	const std::string SaverI::FORMAT_NAME = ".dot";
 	
 	SaverI::SaverI( const std::string &dirPath, const std::string &fileName ) 
 			: dirPath( dirPath ), fileName( fileName ) {}

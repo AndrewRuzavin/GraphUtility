@@ -12,6 +12,7 @@ namespace GraphCreator {
 				CR_ID,
 				CR_COLOR,
 				CR_WEIGHT,
+				SHOW_SETT,
 				CONVERT,
 				SHOW,
 				EXIT,
@@ -26,15 +27,7 @@ namespace GraphCreator {
 					std::string info;
 			};
 
-//			using Handler = void(*)();
-////			using THandler = this::THandler;
-
-//			using Fun = void (*)();
-//			using q = void (Menu::Fun*)();
-
-//			using Handler = function
-//			void ( Menu::*fun )();
-//			using Handler = Menu::*fun;
+			using GraphSettingFields = CreatorI::GraphSettingFields;
 
 		public:
 			Menu( const std::string &currentDir, const std::string &filePath );
@@ -45,24 +38,39 @@ namespace GraphCreator {
 			void fillCommands();
 			void exceptionHandler( const std::exception &e ) const;
 			void execTry();
+			void fillInfoFields();
+			void outputInfo() const;
 			bool menuSelector();
 			std::string takeNextCommand() const;
 			void execCommand( const std::string &inputCommand ) const;
-			void outputInfo() const;
 			void outputAllCommandInfos() const;
-			void changeRangeId() const;
-			void changeRangeColor() const;
-			void changeRangeWeight() const;
+			void changeRangeId();
+			template<class Range, class BorderType>
+				void takeRange( Range &range, const BorderType lower, const BorderType upper );
+			template<class ValType, class BorderType>
+				bool takeOneOfRange( ValType &val, const BorderType lower, const BorderType upper, const std::string &infoStr ) const;
+			template<class ValType, class BorderType>
+				bool takeValue( ValType &val, const BorderType lower, const BorderType upper ) const;
+			template<class ValType>
+				bool isItNum( const std::string &str ) const;
+			template<class ValType>
+				auto convertStrToVal( const std::string &str ) const;
+			template<class ValType, class BorderType>
+				bool withinTheBorder( const ValType val, const BorderType lower, const BorderType upper ) const;
+			void changeRangeColor();
+			void changeRangeWeight();
+			void showSettings() const;
+			template<class Range>
+				void outputRange( const Range &range ) const;
 			void convert();
 			void showGraph() const;
 
 			GraphCreator creator;
-//			std::array<std::string, AMOUNT_OF_COMMANDS> commands;
-//			std::array<std::pair<std::string, Handler>, AMOUNT_OF_COMMANDS> commands;
 			std::array<Command, AMOUNT_OF_COMMANDS> commands;
-
-
-//			std::array<std::pair<std::string, Func::Fun>, AMOUNT_OF_COMMANDS> commands;
+			size_t vNum;
+			size_t eNum;
+			GraphSettingFields graphSettings;
+			static const int COLOR_MAX_RANGE;
 	};
 
 }

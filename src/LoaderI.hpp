@@ -57,6 +57,7 @@ namespace GraphCreator {
 			void throwException( FileException::ExceptionType type ) const;
 			size_t eof() const;
 			bool isThisTheEnd( const FileFieldFormat &container, const FileFieldFormatIter &iter ) const;
+			bool readValuesAreCorrect() const;
 			void processingAttempt() const;
 			bool isVertexInfoEnd() const;
 			bool isEdgeInfoEnd() const;

@@ -41,6 +41,11 @@ namespace GraphCreator {
 		processingAttempt();
 		return std::end( container ) == iter;
 	}
+
+	bool LoaderI::readValuesAreCorrect() const {
+		return fileFieldsInfo.headerInfo.vertexNum > 0 &&
+			fileFieldsInfo.headerInfo.edgeNum > 0;
+	}
 	
 	void LoaderI::processingAttempt() const {
 		if( !isLoaded() ) {

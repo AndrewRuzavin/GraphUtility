@@ -28,8 +28,8 @@ namespace GraphCreator {
 			std::string fileName;
 			std::string fullFileName;
 			
-			static const std::string dirName ;
-			static const std::string formatName;
+			static const std::string DIR_NAME;
+			static const std::string FORMAT_NAME;
 	};
 	
 }

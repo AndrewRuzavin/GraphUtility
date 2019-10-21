@@ -16,28 +16,28 @@ namespace GraphCreator {
 		return loader->getENum();
 	}
 	
-	void Converter::convertToGraph() {
-		createGraphInputFile();
+	void Converter::convertToGraph( const GraphSettingFields &settings ) {
+		createGraphInputFile( settings);
 		saveGraph( saver->getFullName() );
 	}
 	
-	void Converter::createGraphInputFile() {
+	void Converter::createGraphInputFile( const GraphSettingFields &settings ) {
 		saver->open();
 
-		convertVertices();
-		convertEdges();
+		convertVertices( settings );
+		convertEdges( settings );
 
 		saver->close();
 	}
 
-	void Converter::convertVertices() {
+	void Converter::convertVertices( const GraphSettingFields &settings ) {
 		while( !loader->isVertexInfoEnd() ) {
 			auto vertex = loader->readNextVertexInfo();
 			saver->writeVertex( vertex );
 		}
 	}
 	
-	void Converter::convertEdges() {
+	void Converter::convertEdges( const GraphSettingFields &settings ) {
 		while( !loader->isEdgeInfoEnd() ) {
 			auto edge = loader->readNextEdgeInfo();
 			saver->writeEdge( edge );

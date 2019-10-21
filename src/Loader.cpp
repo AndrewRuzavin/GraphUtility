@@ -51,7 +51,9 @@ namespace GraphCreator {
 		fileFieldsInfo.headerInfo.vertexNum = readNextInfo( fileFieldsInfo.fileHeaderFields, fieldIter );
 		fileFieldsInfo.headerInfo.edgeNum = readNextInfo( fileFieldsInfo.fileHeaderFields, fieldIter );
 		
-		if ( !isThisTheEnd( fileFieldsInfo.fileHeaderFields, fieldIter ) ) {
+		if ( !isThisTheEnd( fileFieldsInfo.fileHeaderFields, fieldIter )
+				|| !readValuesAreCorrect() ) {
+
 			throwException( FileException::WrongFormat );
 		}
 	}

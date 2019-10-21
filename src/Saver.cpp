@@ -45,15 +45,15 @@ namespace GraphCreator {
 	}
 	
 	void Saver::createDir() const {
-		std::string fullDirPath( "mkdir -p " + dirPath + dirName );
+		std::string fullDirPath( "mkdir -p " + dirPath + DIR_NAME );
 		system( fullDirPath.c_str() );
 	}
 	
 	void Saver::createFullPath() {
 		fullFileName.clear();
-		fullFileName.append( dirName );
+		fullFileName.append( DIR_NAME );
 		fullFileName.append( fileName );
-		fullFileName.append( formatName );
+		fullFileName.append( FORMAT_NAME );
 	}
 	
 	void Saver::fillHeader() {
