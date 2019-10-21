@@ -3,9 +3,7 @@
 ## Приложение
 Утилита принимает один параметр - путь к файлу исходных данных.  
 Утилита [GraphUtility](https://drive.google.com/file/d/1TKSXK10VCYmoknBN8_tBlsqauFD6ceAb/view?usp=sharing).  
-[Инсталлер](https://drive.google.com/file/d/1E42CcdWKATIQAesbWh3oxG7blKKQHxVq/view?usp=sharing) libgvc6. Необходимо для запуска утилиты.
-
-
+Инсталлер [libgvc6](https://drive.google.com/file/d/1E42CcdWKATIQAesbWh3oxG7blKKQHxVq/view?usp=sharing). Необходима для запуска утилиты.
 
 ## Примеры работы
 ![help](https://user-images.githubusercontent.com/32496224/67199815-dad8c380-f40a-11e9-93eb-b77830286751.png)  
