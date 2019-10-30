@@ -79,6 +79,7 @@ namespace GraphCreator {
 			
 			std::string filePath;
 			std::stringstream contents;
+			std::string contentsStr;
 			mutable bool isLoadedFlag = false;
 			const size_t cEOFields = -1;
 	};

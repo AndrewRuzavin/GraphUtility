@@ -43,6 +43,7 @@ namespace GraphCreator {
 		loader.open();
 		isLoadedFlag = true;
 		contents = loader.read();
+		contentsStr = contents.str();
 	}
 	
 	void Loader::fillHeaderFields() {
@@ -91,7 +92,7 @@ namespace GraphCreator {
 		}
 	
 	size_t Loader::takeIndex( const std::string &str, const size_t pos ) const {
-		const auto index = contents.str().find( str, pos );
+		const auto index = contentsStr.find( str, pos );
 		
 		if ( std::string::npos == index ) {
 			throwException( FileException::WrongFormat );
@@ -108,10 +109,8 @@ namespace GraphCreator {
 	}
 
 	std::string Loader::strNum( const size_t start, const size_t end ) const {
-		auto str = contents.str();
-
-		auto valStart = std::begin( str ) + start;
-		auto valEnd = std::begin( str ) + end;
+		auto valStart = std::begin( contentsStr ) + start;
+		auto valEnd = std::begin( contentsStr ) + end;
 
 		std::string resultStr( valStart, valEnd );
 		return resultStr;
@@ -167,9 +166,6 @@ namespace GraphCreator {
 	
 	size_t Loader::takeNumber( const size_t start, const size_t end ) const {
 		auto fieldNum = strNum( start, end );
-		
-		volatile auto qwe = contents.str();
-
 		return std::stoi( fieldNum );
 	}
 	
